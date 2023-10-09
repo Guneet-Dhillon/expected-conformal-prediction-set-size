@@ -30,14 +30,14 @@ Use Python version 3.9. To download the dependencies, run
 pip install -r requirements.txt
 ```
 
-### Computing the expected conformal prediciton set size
+### Computing the expected conformal prediction set size
 
-To compute the expected conformal prediciton set size, run
+To compute the expected conformal prediction set size, run
 ```
 python main_run.py --type $type --alpha $alpha --gamma $gamma --frac_train $frac_train --frac_cal $frac_cal --it_train $it_train --it_cal $it_cal
 ```
 with the following arguments:
-- type          : Conformal predictor type ('LPRegression', 'ZeroOneClassification', 'QuantileRegression', 'LACClassification', 'APSClassification')
+- type          : Conformal predictor type ('LPRegression', 'ZeroOneClassification', 'CQRRegression', 'LACClassification', 'APSClassification')
 - alpha         : Conformal predictor significance level (default=0.1)
 - gamma         : Prediction set size interval significance level (default=0.1)
 - frac_train    : Fraction used as training dataset (default=0.25)
