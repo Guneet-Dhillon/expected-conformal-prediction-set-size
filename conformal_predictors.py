@@ -95,7 +95,7 @@ class ZeroOneClassificationConformalPredictor(BaseConformalPredictor):
         mf = (r == 0.) + ((self.num_classes - 1) * (r == 1.))
         return mf
 
-class QuantileRegressionConformalPredictor(BaseConformalPredictor):
+class CQRRegressionConformalPredictor(BaseConformalPredictor):
     def __init__(self, y, y_num=100, model='randomforest'):
         super().__init__('continuous', 'continuous')
 

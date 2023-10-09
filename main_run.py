@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 from conformal_predictors import \
     LPRegressionConformalPredictor, ZeroOneClassificationConformalPredictor, \
-    QuantileRegressionConformalPredictor, LACClassificationConformalPredictor, \
+    CQRRegressionConformalPredictor, LACClassificationConformalPredictor, \
     APSClassificationConformalPredictor
 from utils import set_random_seed, get_datasets, get_error, get_size
 
@@ -36,8 +36,8 @@ def get_dataset_results(dataset, X, y, args):
     elif typ == 'ZeroOneClassification':
         num_classes = np.unique(y).shape[0]
         predictor = ZeroOneClassificationConformalPredictor(num_classes)
-    elif typ == 'QuantileRegression':
-        predictor = QuantileRegressionConformalPredictor(y)
+    elif typ == 'CQRRegression':
+        predictor = CQRRegressionConformalPredictor(y)
     elif typ == 'LACClassification':
         num_classes = np.unique(y).shape[0]
         predictor = LACClassificationConformalPredictor(num_classes)
@@ -149,7 +149,7 @@ def main():
     parser.add_argument(
         '--type', type=str, required=True,
         choices=[
-            'LPRegression', 'ZeroOneClassification', 'QuantileRegression',
+            'LPRegression', 'ZeroOneClassification', 'CQRRegression',
             'LACClassification', 'APSClassification'
         ],
         help='Conformal predictor type'
