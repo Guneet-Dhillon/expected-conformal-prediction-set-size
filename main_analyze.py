@@ -27,14 +27,18 @@ def get_stats():
         error = get_mean_std(error)
         size = get_mean_std(size)
 
+        # Compute the prediciton set size absolue error
+        error_size_point = np.abs(size[0] - size_est)
+
         # Compute the prediction set size interval error
-        error_size_est = get_size_error(size[0], size_est_lower, size_est_upper)
+        error_size_int = get_size_error(size[0], size_est_lower, size_est_upper)
 
         # Compute the mean and the standard deviation of the stats
         size_est = get_mean_std(size_est)
         size_est_lower = get_mean_std(size_est_lower)
         size_est_upper = get_mean_std(size_est_upper)
-        error_size_est = get_mean_std(error_size_est)
+        error_size_point = get_mean_std(error_size_point)
+        error_size_int = get_mean_std(error_size_int)
 
         # Accumulate the results
         stat_out = {
@@ -46,7 +50,8 @@ def get_stats():
             'estimated size'                    : size_est,
             'estimated size (lower)'            : size_est_lower,
             'estimated size (upper)'            : size_est_upper,
-            'error (estimated size interval)'   : error_size_est
+            'error (estimated size)'            : error_size_point,
+            'error (estimated size interval)'   : error_size_int
         }
         if 'Regression' in typ:
             stat_out['y_range'] = stat_in['y_range']
@@ -99,16 +104,18 @@ def print_stats(stats):
         # Print the conformal prediction set size stats
         print('Prediction set size')
         print(
-            'Dataset \t Interval lower bound \t Observed \t Estimated '
-            '\t Interval upper bound \t Interval error'
+            'Dataset \t Interval lower bound \t Monte Carlo average '
+            '\t Point estimate \t Interval upper bound \t Absolute error '
+            '\t Interval error'
         )
         for stat in stats[typ]:
             print(
                 '%s \t %.2f (%.2f) \t %.2f (%.2f) \t %.2f (%.2f) '
-                '\t %.2f (%.2f) \t %.4f' % (
+                '\t %.2f (%.2f) \t %.2f (%.2f) \t %.4f' % (
                     stat['dataset'], *stat['estimated size (lower)'],
                     *stat['size'], *stat['estimated size'],
                     *stat['estimated size (upper)'],
+                    *stat['error (estimated size)'],
                     stat['error (estimated size interval)'][0]
             ))
         print()
