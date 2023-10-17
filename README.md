@@ -37,7 +37,7 @@ To compute the expected conformal prediction set size, run
 python main_run.py --type $type --alpha $alpha --gamma $gamma --frac_train $frac_train --frac_cal $frac_cal --it_train $it_train --it_cal $it_cal
 ```
 with the following arguments:
-- type          : Conformal predictor type ('LPRegression', 'ZeroOneClassification', 'CQRRegression', 'LACClassification', 'APSClassification')
+- type          : Conformal predictor type ('L1Regression', 'ZeroOneClassification', 'CQRRegression', 'LACClassification', 'APSClassification')
 - alpha         : Conformal predictor significance level (default=0.1)
 - gamma         : Prediction set size interval significance level (default=0.1)
 - frac_train    : Fraction used as training dataset (default=0.25)

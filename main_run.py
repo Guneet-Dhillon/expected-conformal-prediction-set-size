@@ -31,7 +31,7 @@ def get_dataset_results(dataset, X, y, args):
     n_test = n - n_train - n_cal
 
     # Initialize the conformal predictor
-    if typ == 'LPRegression':
+    if typ == 'L1Regression':
         predictor = LPRegressionConformalPredictor(y)
     elif typ == 'ZeroOneClassification':
         num_classes = np.unique(y).shape[0]
@@ -149,7 +149,7 @@ def main():
     parser.add_argument(
         '--type', type=str, required=True,
         choices=[
-            'LPRegression', 'ZeroOneClassification', 'CQRRegression',
+            'L1Regression', 'ZeroOneClassification', 'CQRRegression',
             'LACClassification', 'APSClassification'
         ],
         help='Conformal predictor type'
