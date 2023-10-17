@@ -9,7 +9,8 @@ from tqdm import tqdm
 from conformal_predictors import \
     LPRegressionConformalPredictor, ZeroOneClassificationConformalPredictor, \
     CQRRegressionConformalPredictor, LACClassificationConformalPredictor, \
-    APSClassificationConformalPredictor
+    APSClassificationConformalPredictor, \
+    LPHighDimensionRegressionConformalPredictor
 from utils import set_random_seed, get_datasets, get_error, get_size
 
 def get_dataset_results(dataset, X, y, args):
@@ -44,6 +45,10 @@ def get_dataset_results(dataset, X, y, args):
     elif typ == 'APSClassification':
         num_classes = np.unique(y).shape[0]
         predictor = APSClassificationConformalPredictor(num_classes)
+    elif typ == 'L1HighDimensionRegression':
+        predictor = LPHighDimensionRegressionConformalPredictor(y, 1.)
+    elif typ == 'L2HighDimensionRegression':
+        predictor = LPHighDimensionRegressionConformalPredictor(y, 2.)
 
     results = {
         'error' : [], 'size' : [], 'estimated size' : [],
@@ -150,7 +155,8 @@ def main():
         '--type', type=str, required=True,
         choices=[
             'L1Regression', 'ZeroOneClassification', 'CQRRegression',
-            'LACClassification', 'APSClassification'
+            'LACClassification', 'APSClassification',
+            'L1HighDimensionRegression', 'L2HighDimensionRegression'
         ],
         help='Conformal predictor type'
     )

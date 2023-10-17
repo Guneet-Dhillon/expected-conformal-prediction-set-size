@@ -1,3 +1,4 @@
+import math
 import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
@@ -243,4 +244,53 @@ class APSClassificationConformalPredictor(BaseConformalPredictor):
         R_test = self.get_nonconformity_scores(X_test)
         C = R_test <= self.threshold
         return C
+
+class LPHighDimensionRegressionConformalPredictor(BaseConformalPredictor):
+    def __init__(self, y, p, model='randomforest'):
+        super().__init__('continuous', 'continuous')
+
+        # Set the order of the norm
+        self.p = p
+
+        # Set the dimensionality
+        self.d = y.shape[1]
+
+        # Set the minimum and the maximum non-conformity scores
+        self.r_min = 0.
+        self.r_max = (
+            (np.abs(y[np.newaxis, :, :] - y[:, np.newaxis, :]) ** self.p).sum(2)
+        ).max()
+
+        # The machine learning model
+        if model == 'randomforest':
+            self.model = RandomForestRegressor()
+
+        # The multiplicative factor is known
+        self.get_prediction_set_size_estimates = \
+            self.get_prediction_set_size_estimates_known_multiplicative_factor
+
+    def get_model_prediction(self, X):
+        # Compute the machine learning model prediction
+        yh = self.model.predict(X)
+        return yh
+
+    def get_nonconformity_score(self, X, y):
+        # Compute the non-conformity score
+        yh = self.get_model_prediction(X)
+        r = (np.abs(yh - y) ** self.p).sum(1)
+        return r
+
+    def get_prediction(self, X_test):
+        # Compute the conformal prediction set
+        yh_test = self.get_model_prediction(X_test)
+        return yh_test, self.threshold, self.p
+
+    def integrate_multiplicative_factor(self, r):
+        # Compute the integral of the multiplicative factor over each
+        # (r[i], r[i + 1]] region
+        int_mf = \
+            ((r[1 :] ** (self.d / self.p)) - (r[: -1] ** (self.d / self.p))) \
+            * ((2. * math.gamma((1. / self.p) + 1.)) ** self.d) \
+            / math.gamma((self.d / self.p) + 1.)
+        return int_mf
 

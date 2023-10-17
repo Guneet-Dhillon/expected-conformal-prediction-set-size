@@ -28,6 +28,23 @@ def get_regression_datasets():
 
     return datasets
 
+def get_high_dimension_regression_datasets():
+    # Get UCI high-dimension regression datasets
+    datasets = []
+    for dataset in regression_datasets.all_datasets():
+        train = dataset('data', split='train', validation_size=0.)
+        test = dataset('data', split='test', validation_size=0.)
+
+        name = train.name
+        X = np.vstack([train.x, test.x])
+        y = np.vstack([train.y, test.y])
+
+        if X.shape[0] >= 1000 and y.shape[1] > 1:
+            dataset = (name, X, y)
+            datasets.append(dataset)
+
+    return datasets
+
 def get_classification_datasets():
     # Get UCI classification datasets
     datasets = []
@@ -47,6 +64,8 @@ def get_classification_datasets():
 
 def get_datasets(typ):
     if 'Regression' in typ:
+        if 'HighDimension' in typ:
+            return get_high_dimension_regression_datasets()
         return get_regression_datasets()
     elif 'Classification'in typ:
         return get_classification_datasets()
@@ -63,6 +82,12 @@ def get_regression_error(C, y):
     error = 1. - np.logical_or(close, contain)
     return error
 
+def get_high_dimension_regression_error(C, y):
+    # Compute prediction error in the high-dimension regression case
+    yh, r, p = C
+    error = 1. - ((np.abs(yh - y) ** p).sum(1) <= r)
+    return error
+
 def get_classification_error(C, y):
     # Compute prediction error in the classification case
     n = C.shape[0]
@@ -71,6 +96,8 @@ def get_classification_error(C, y):
 
 def get_error(typ, C, y):
     if 'Regression' in typ:
+        if 'HighDimension' in typ:
+            return get_high_dimension_regression_error(C, y)
         return get_regression_error(C, y)
     elif 'Classification'in typ:
         return get_classification_error(C, y)
@@ -80,6 +107,15 @@ def get_regression_size(C):
     size = (C[1] - C[0])
     return size
 
+def get_high_dimension_regression_size(C):
+    # Compute prediction set size in the high-dimension regression case
+    yh, r, p = C
+    d = yh.shape[1]
+    size = \
+        (r ** (d / p)) * ((2. * math.gamma((1. / p) + 1.)) ** d) \
+        / math.gamma((d / p) + 1.)
+    return size
+
 def get_classification_size(C):
     # Compute prediction set size in the classification case
     size = C.sum(1)
@@ -87,6 +123,8 @@ def get_classification_size(C):
 
 def get_size(typ, C):
     if 'Regression' in typ:
+        if 'HighDimension' in typ:
+            return get_high_dimension_regression_size(C)
         return get_regression_size(C)
     elif 'Classification'in typ:
         return get_classification_size(C)
