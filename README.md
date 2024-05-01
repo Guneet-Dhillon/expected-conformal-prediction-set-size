@@ -3,21 +3,30 @@
 This repository contains the code for the paper:
 
 [Guneet Singh Dhillon](https://guneet-dhillon.github.io/), [George Deligiannidis](https://www.stats.ox.ac.uk/~deligian/), [Tom Rainforth](https://www.robots.ox.ac.uk/~twgr/)  
-**On the Expected Size of Conformal Prediction Sets** ([pdf](https://arxiv.org/pdf/2306.07254.pdf))
+**On the Expected Size of Conformal Prediction Sets** ([pdf](https://arxiv.org/pdf/2306.07254.pdf))  
+*In Proceedings of the International Conference on Artificial Intelligence and Statistics (AISTATS), 2024*
 
 ## Abstract
 
-While conformal predictors reap the benefits of rigorous statistical guarantees for their error frequency, the size of their corresponding prediction sets is critical to their practical utility. Unfortunately, there is currently a lack of finite-sample analysis and guarantees for their prediction set sizes. To address this shortfall, we theoretically quantify the expected size of the prediction set under the split conformal prediction framework. As this precise formulation cannot usually be calculated directly, we further derive point estimates and high probability intervals that can be easily computed, providing a practical method for characterizing the expected prediction set size across different possible realizations of the test and calibration data. Additionally, we corroborate the efficacy of our results with experiments on real-world datasets, for both regression and classification problems.
+While conformal predictors reap the benefits of rigorous statistical guarantees on their error frequency, the size of their corresponding prediction sets is critical to their practical utility. Unfortunately, there is currently a lack of finite-sample analysis and guarantees for their prediction set sizes. To address this shortfall, we theoretically quantify the expected size of the prediction sets under the split conformal prediction framework. As this precise formulation cannot usually be calculated directly, we further derive point estimates and high-probability interval bounds that can be empirically computed, providing a practical method for characterizing the expected set size. We corroborate the efficacy of our results with experiments on real-world datasets for both regression and classification problems.
 
 ## Citation
 
 If you use this code for your research, please cite our paper:
 ```
-@article{dhillon2023expected,
+@inproceedings{dhillon2024expected,
   title={On the Expected Size of Conformal Prediction Sets},
-  author={Dhillon, Guneet S and Deligiannidis, George and Rainforth, Tom},
-  journal={arXiv preprint arXiv:2306.07254},
-  year={2023}
+  author={Dhillon, Guneet S. and Deligiannidis, George and Rainforth, Tom},
+  booktitle={Proceedings of The 27th International Conference on Artificial Intelligence and Statistics},
+  pages={1549--1557},
+  year={2024},
+  editor={Dasgupta, Sanjoy and Mandt, Stephan and Li, Yingzhen},
+  volume={238},
+  series={Proceedings of Machine Learning Research},
+  month={02--04 May},
+  publisher={PMLR},
+  pdf={https://proceedings.mlr.press/v238/dhillon24a/dhillon24a.pdf},
+  url={https://proceedings.mlr.press/v238/dhillon24a.html}
 }
 ```
 
